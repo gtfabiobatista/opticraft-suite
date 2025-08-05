@@ -68,35 +68,35 @@ const ApiKeysPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">API Keys</h1>
+          <h1 className="text-3xl font-bold text-foreground">Chaves de API</h1>
           <p className="text-muted-foreground">
-            Manage your API keys and monitor their usage
+            Gerencie suas chaves de API e monitore seu uso
           </p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-gradient-primary">
               <Plus className="mr-2 h-4 w-4" />
-              Create API Key
+              Criar Chave API
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New API Key</DialogTitle>
+              <DialogTitle>Criar Nova Chave API</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="key-name">Key Name</Label>
+                <Label htmlFor="key-name">Nome da Chave</Label>
                 <Input
                   id="key-name"
-                  placeholder="e.g., Production API, Development"
+                  placeholder="ex: API de Produção, Desenvolvimento"
                   value={newKeyName}
                   onChange={(e) => setNewKeyName(e.target.value)}
                 />
               </div>
               
               <div className="space-y-3">
-                <Label>Permissions</Label>
+                <Label>Permissões</Label>
                 <div className="space-y-2">
                   {(['read', 'write', 'admin'] as const).map((permission) => (
                     <div key={permission} className="flex items-center space-x-2">
@@ -115,9 +115,9 @@ const ApiKeysPage = () => {
                         {permission}
                       </Label>
                       <span className="text-xs text-muted-foreground">
-                        {permission === 'read' && '(View images and stats)'}
-                        {permission === 'write' && '(Process images)'}
-                        {permission === 'admin' && '(Full access)'}
+                        {permission === 'read' && '(Ver imagens e estatísticas)'}
+                        {permission === 'write' && '(Processar imagens)'}
+                        {permission === 'admin' && '(Acesso completo)'}
                       </span>
                     </div>
                   ))}
@@ -126,10 +126,10 @@ const ApiKeysPage = () => {
 
               <div className="flex justify-end space-x-2 pt-4">
                 <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button onClick={handleCreateKey} disabled={!newKeyName.trim() || newKeyPermissions.length === 0}>
-                  Create Key
+                  Criar Chave
                 </Button>
               </div>
             </div>
@@ -148,8 +148,8 @@ const ApiKeysPage = () => {
                   <div>
                     <CardTitle className="text-lg">{apiKey.name}</CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Created {formatDate(apiKey.createdAt)}
-                      {apiKey.lastUsed && ` • Last used ${formatDate(apiKey.lastUsed)}`}
+                      Criada em {formatDate(apiKey.createdAt)}
+                      {apiKey.lastUsed && ` • Último uso em ${formatDate(apiKey.lastUsed)}`}
                     </p>
                   </div>
                 </div>
@@ -164,7 +164,7 @@ const ApiKeysPage = () => {
                     </Badge>
                   ))}
                   {!apiKey.isActive && (
-                    <Badge variant="destructive">Revoked</Badge>
+                    <Badge variant="destructive">Revogada</Badge>
                   )}
                 </div>
               </div>
@@ -173,7 +173,7 @@ const ApiKeysPage = () => {
             <CardContent className="space-y-4">
               {/* API Key Display */}
               <div className="space-y-2">
-                <Label>API Key</Label>
+                <Label>Chave API</Label>
                 <div className="flex items-center space-x-2">
                   <Input
                     readOnly
@@ -204,7 +204,7 @@ const ApiKeysPage = () => {
               {/* Usage Stats */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label>Monthly Usage</Label>
+                  <Label>Uso Mensal</Label>
                   <span className="text-sm text-muted-foreground">
                     {apiKey.requestCount.toLocaleString()} / {apiKey.monthlyLimit.toLocaleString()}
                   </span>
@@ -229,7 +229,7 @@ const ApiKeysPage = () => {
                         onClick={() => regenerateApiKey(apiKey.id)}
                       >
                         <RotateCcw className="mr-2 h-3 w-3" />
-                        Regenerate
+                        Regenerar
                       </Button>
                       <Button
                         variant="outline"
@@ -238,7 +238,7 @@ const ApiKeysPage = () => {
                         className="text-destructive hover:text-destructive"
                       >
                         <Trash2 className="mr-2 h-3 w-3" />
-                        Revoke
+                        Revogar
                       </Button>
                     </>
                   )}
@@ -252,32 +252,32 @@ const ApiKeysPage = () => {
       {/* Usage Guidelines */}
       <Card>
         <CardHeader>
-          <CardTitle>Usage Guidelines</CardTitle>
+          <CardTitle>Diretrizes de Uso</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <h4 className="font-medium mb-2">Authentication</h4>
+              <h4 className="font-medium mb-2">Autenticação</h4>
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>Include your API key in the Authorization header:</p>
+                <p>Inclua sua chave API no cabeçalho Authorization:</p>
                 <code className="block p-2 bg-muted rounded text-xs">
-                  Authorization: Bearer your_api_key_here
+                  Authorization: Bearer sua_chave_api_aqui
                 </code>
               </div>
             </div>
             
             <div>
-              <h4 className="font-medium mb-2">Rate Limits</h4>
+              <h4 className="font-medium mb-2">Limites de Taxa</h4>
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>• 100 requests per minute</p>
-                <p>• Monthly limits based on plan</p>
-                <p>• Batch processing counts as multiple requests</p>
+                <p>• 100 requisições por minuto</p>
+                <p>• Limites mensais baseados no plano</p>
+                <p>• Processamento em lote conta como múltiplas requisições</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h4 className="font-medium mb-2">Example Request</h4>
+            <h4 className="font-medium mb-2">Exemplo de Requisição</h4>
             <pre className="p-3 bg-muted rounded text-xs overflow-x-auto">
 {`curl -X POST https://api.imageopt.com/v1/optimize \\
   -H "Authorization: Bearer your_api_key_here" \\

@@ -51,20 +51,20 @@ const Dashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground">
-            Monitor your image optimization performance and usage
+            Monitore o desempenho e uso da otimização de imagens
           </p>
         </div>
         <div className="flex gap-3">
           <Button asChild>
             <Link to="/optimize">
               <Image className="mr-2 h-4 w-4" />
-              Optimize Image
+              Otimizar Imagem
             </Link>
           </Button>
           <Button variant="outline" asChild>
             <Link to="/batch">
               <Zap className="mr-2 h-4 w-4" />
-              Batch Process
+              Proc. em Lote
             </Link>
           </Button>
         </div>
@@ -73,39 +73,39 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard
-          title="Images Processed"
+          title="Imagens Processadas"
           value={mockStats.totalImagesProcessed.toLocaleString()}
           icon={<Image className="h-4 w-4" />}
           trend={{
             value: 12.5,
-            label: 'vs last month',
+            label: 'vs mês passado',
             isPositive: true,
           }}
         />
         <StatsCard
-          title="Data Saved"
+          title="Dados Economizados"
           value={formatBytes(mockStats.totalBytesSaved)}
           icon={<HardDrive className="h-4 w-4" />}
           trend={{
             value: 8.3,
-            label: 'vs last month',
+            label: 'vs mês passado',
             isPositive: true,
           }}
         />
         <StatsCard
-          title="Avg Processing Time"
+          title="Tempo Médio de Proc."
           value={`${mockStats.averageProcessingTime}s`}
           icon={<Clock className="h-4 w-4" />}
           trend={{
             value: -15.2,
-            label: 'vs last month',
+            label: 'vs mês passado',
             isPositive: true,
           }}
         />
         <StatsCard
-          title="API Requests"
+          title="Requisições da API"
           value={mockStats.monthlyUsage.toLocaleString()}
-          description={`of ${mockStats.monthlyLimit.toLocaleString()} this month`}
+          description={`de ${mockStats.monthlyLimit.toLocaleString()} este mês`}
           icon={<BarChart3 className="h-4 w-4" />}
         />
       </div>
@@ -114,9 +114,9 @@ const Dashboard = () => {
       <Card className="border-l-4 border-l-primary">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Monthly Usage</CardTitle>
+            <CardTitle className="text-lg">Uso Mensal</CardTitle>
             <Badge variant="outline" className="bg-gradient-primary text-primary-foreground border-0">
-              Pro Plan
+              Plano Pro
             </Badge>
           </div>
         </CardHeader>
@@ -132,11 +132,11 @@ const Dashboard = () => {
             </div>
             <Progress value={usagePercentage} className="h-2" />
             <p className="text-xs text-muted-foreground">
-              Resets on the 1st of each month. 
+              Reinicia no dia 1º de cada mês. 
               <Button variant="link" className="p-0 h-auto text-xs text-primary">
-                Upgrade plan
+                Atualizar plano
               </Button>
-              {' '}for higher limits.
+              {' '}para limites maiores.
             </p>
           </div>
         </CardContent>
@@ -151,7 +151,7 @@ const Dashboard = () => {
         {/* Recent Activity */}
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle>Atividade Recente</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {recentActivity.map((activity) => (
@@ -162,10 +162,10 @@ const Dashboard = () => {
                   }`} />
                   <div>
                     <p className="text-sm font-medium">
-                      {activity.type === 'batch' ? 'Batch processing' : 'Single image'}
+                      {activity.type === 'batch' ? 'Processamento em lote' : 'Imagem individual'}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {activity.count} image{activity.count !== 1 ? 's' : ''}
+                      {activity.count} imagem{activity.count !== 1 ? 'ns' : ''}
                     </p>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ const Dashboard = () => {
             
             <Button variant="outline" className="w-full" asChild>
               <Link to="/history">
-                View All History
+                Ver Todo o Histórico
               </Link>
             </Button>
           </CardContent>
@@ -193,26 +193,26 @@ const Dashboard = () => {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
+          <CardTitle>Ações Rápidas</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-3">
             <Button variant="outline" className="h-20 flex-col space-y-2" asChild>
               <Link to="/optimize">
                 <Image className="h-6 w-6" />
-                <span>Optimize Single Image</span>
+                <span>Otimizar Imagem</span>
               </Link>
             </Button>
             <Button variant="outline" className="h-20 flex-col space-y-2" asChild>
               <Link to="/batch">
                 <Zap className="h-6 w-6" />
-                <span>Batch Processing</span>
+                <span>Proc. em Lote</span>
               </Link>
             </Button>
             <Button variant="outline" className="h-20 flex-col space-y-2" asChild>
               <Link to="/api-keys">
                 <TrendingUp className="h-6 w-6" />
-                <span>Manage API Keys</span>
+                <span>Gerenciar Chaves API</span>
               </Link>
             </Button>
           </div>

@@ -81,7 +81,7 @@ export const ImagePreview = ({
               <div className="absolute inset-0 bg-background/80 rounded-lg flex items-center justify-center">
                 <div className="text-center space-y-2">
                   <Clock className="h-6 w-6 animate-spin text-primary mx-auto" />
-                  <p className="text-xs font-medium">Processing...</p>
+                  <p className="text-xs font-medium">Processando...</p>
                 </div>
               </div>
             )}
@@ -127,13 +127,13 @@ export const ImagePreview = ({
             {image.status === 'completed' && image.optimizedSize && (
               <div className="space-y-2 pt-2 border-t border-border">
                 <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Optimized:</span>
+                  <span className="text-muted-foreground">Otimizado:</span>
                   <span className="font-medium text-success">
                     {formatFileSize(image.optimizedSize)}
                   </span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Saved:</span>
+                  <span className="text-muted-foreground">Economizado:</span>
                   <span className="font-medium text-success">
                     {getSavingsPercentage().toFixed(1)}%
                   </span>
@@ -162,7 +162,7 @@ export const ImagePreview = ({
                 className="flex-1"
               >
                 <Settings className="mr-2 h-3 w-3" />
-                Optimize
+                Otimizar
               </Button>
             )}
 
@@ -174,7 +174,7 @@ export const ImagePreview = ({
                 className="flex-1"
               >
                 <Download className="mr-2 h-3 w-3" />
-                Download
+                Baixar
               </Button>
             )}
 
@@ -185,7 +185,7 @@ export const ImagePreview = ({
                 onClick={() => onOptimize(image.id)}
                 className="flex-1"
               >
-                Retry
+                Tentar Novamente
               </Button>
             )}
           </div>

@@ -109,7 +109,7 @@ export const SettingsPanel = ({
 
         {/* Format Selection */}
         <div className="space-y-3">
-          <Label htmlFor="format">Output Format</Label>
+          <Label htmlFor="format">Formato de Saída</Label>
           <Select
             value={settings.format}
             onValueChange={(value) => updateSettings({ format: value as any })}

@@ -12,11 +12,11 @@ import { cn } from '@/lib/utils';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: BarChart3 },
-  { name: 'Single Image', href: '/optimize', icon: Image },
-  { name: 'Batch Processing', href: '/batch', icon: Layers },
-  { name: 'API Keys', href: '/api-keys', icon: Key },
-  { name: 'History', href: '/history', icon: History },
-  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Imagem Individual', href: '/optimize', icon: Image },
+  { name: 'Processamento em Lote', href: '/batch', icon: Layers },
+  { name: 'Chaves de API', href: '/api-keys', icon: Key },
+  { name: 'Histórico', href: '/history', icon: History },
+  { name: 'Configurações', href: '/settings', icon: Settings },
 ];
 
 export const Sidebar = () => {
@@ -68,9 +68,9 @@ export const Sidebar = () => {
       <div className="border-t border-border p-4">
         <div className="rounded-lg bg-gradient-subtle p-3 text-center">
           <p className="text-xs text-muted-foreground">
-            Need help? Check our{' '}
+            Precisa de ajuda? Consulte nossa{' '}
             <a href="#" className="text-primary hover:underline">
-              documentation
+              documentação
             </a>
           </p>
         </div>

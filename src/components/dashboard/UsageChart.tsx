@@ -21,7 +21,7 @@ export const UsageChart = ({ data }: UsageChartProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Usage Overview</CardTitle>
+        <CardTitle>Visão Geral do Uso</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -39,10 +39,10 @@ export const UsageChart = ({ data }: UsageChartProps) => {
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
               }}
-              labelFormatter={(value) => `Date: ${value}`}
+              labelFormatter={(value) => `Data: ${value}`}
               formatter={(value: number, name: string) => [
                 name === 'bytesSaved' ? formatBytes(value) : value,
-                name === 'bytesSaved' ? 'Bytes Saved' : 'Images Processed'
+                name === 'bytesSaved' ? 'Bytes Economizados' : 'Imagens Processadas'
               ]}
             />
             <Legend />
@@ -51,7 +51,7 @@ export const UsageChart = ({ data }: UsageChartProps) => {
               dataKey="count" 
               stroke="hsl(var(--primary))" 
               strokeWidth={2}
-              name="Images Processed"
+              name="Imagens Processadas"
               dot={{ fill: 'hsl(var(--primary))' }}
             />
             <Line 
@@ -59,7 +59,7 @@ export const UsageChart = ({ data }: UsageChartProps) => {
               dataKey="bytesSaved" 
               stroke="hsl(var(--success))" 
               strokeWidth={2}
-              name="Bytes Saved"
+              name="Bytes Economizados"
               dot={{ fill: 'hsl(var(--success))' }}
             />
           </LineChart>

@@ -14,20 +14,20 @@ const defaultPresets: OptimizationPreset[] = [
   {
     id: '1',
     name: 'E-commerce',
-    description: 'Balanced quality and size for product images',
+    description: 'Qualidade balanceada para imagens de produtos',
     settings: { quality: 85, format: 'webp', maintainAspectRatio: true },
     isDefault: true,
   },
   {
     id: '2',
-    name: 'Social Media',
-    description: 'Optimized for social platforms',
+    name: 'Redes Sociais',
+    description: 'Otimizado para plataformas sociais',
     settings: { quality: 75, format: 'webp', width: 1200, maintainAspectRatio: true },
   },
   {
     id: '3',
-    name: 'Web Thumbnails',
-    description: 'Small, fast-loading thumbnails',
+    name: 'Miniaturas Web',
+    description: 'Miniaturas pequenas e rápidas de carregar',
     settings: { quality: 70, format: 'webp', width: 300, height: 300, maintainAspectRatio: false },
   },
 ];
@@ -94,16 +94,16 @@ const BatchPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Batch Processing</h1>
+          <h1 className="text-3xl font-bold text-foreground">Processamento em Lote</h1>
           <p className="text-muted-foreground">
-            Upload multiple images and optimize them with predefined presets
+            Envie múltiplas imagens e otimize-as com presets predefinidos
           </p>
         </div>
         <div className="flex gap-3">
           {statusCounts.completed > 0 && (
             <Button variant="outline" onClick={clearCompleted}>
               <Trash2 className="mr-2 h-4 w-4" />
-              Clear Completed
+              Limpar Concluídos
             </Button>
           )}
           {statusCounts.pending > 0 && (
@@ -115,12 +115,12 @@ const BatchPage = () => {
               {isProcessing ? (
                 <>
                   <Pause className="mr-2 h-4 w-4" />
-                  Processing...
+                  Processando...
                 </>
               ) : (
                 <>
                   <Play className="mr-2 h-4 w-4" />
-                  Start Batch ({statusCounts.pending})
+                  Iniciar Lote ({statusCounts.pending})
                 </>
               )}
             </Button>
@@ -132,12 +132,12 @@ const BatchPage = () => {
       {images.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Batch Status</CardTitle>
+            <CardTitle>Status do Lote</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Overall Progress</span>
+                <span className="text-sm text-muted-foreground">Progresso Geral</span>
                 <span className="text-sm font-medium">{progress.toFixed(1)}%</span>
               </div>
               <Progress value={progress} className="h-2" />
@@ -145,22 +145,22 @@ const BatchPage = () => {
               <div className="grid grid-cols-4 gap-4 pt-2">
                 <div className="text-center">
                   <Badge variant="outline" className="w-full justify-center">
-                    {statusCounts.pending} Pending
+                    {statusCounts.pending} Pendente
                   </Badge>
                 </div>
                 <div className="text-center">
                   <Badge variant="outline" className="w-full justify-center bg-warning/10 text-warning border-warning">
-                    {statusCounts.processing} Processing
+                    {statusCounts.processing} Processando
                   </Badge>
                 </div>
                 <div className="text-center">
                   <Badge variant="outline" className="w-full justify-center bg-success/10 text-success border-success">
-                    {statusCounts.completed} Completed
+                    {statusCounts.completed} Concluído
                   </Badge>
                 </div>
                 <div className="text-center">
                   <Badge variant="outline" className="w-full justify-center bg-destructive/10 text-destructive border-destructive">
-                    {statusCounts.error} Failed
+                    {statusCounts.error} Falhou
                   </Badge>
                 </div>
               </div>
@@ -184,7 +184,7 @@ const BatchPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
-                Optimization Presets
+                Presets de Otimização
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -205,7 +205,7 @@ const BatchPage = () => {
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-medium">{preset.name}</h4>
                       {preset.isDefault && (
-                        <Badge variant="outline" className="text-xs">Default</Badge>
+                        <Badge variant="outline" className="text-xs">Padrão</Badge>
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground mb-3">
@@ -213,16 +213,16 @@ const BatchPage = () => {
                     </p>
                     <div className="text-xs space-y-1">
                       <div className="flex justify-between">
-                        <span>Quality:</span>
+                        <span>Qualidade:</span>
                         <span>{preset.settings.quality}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Format:</span>
+                        <span>Formato:</span>
                         <span className="uppercase">{preset.settings.format}</span>
                       </div>
                       {preset.settings.width && (
                         <div className="flex justify-between">
-                          <span>Size:</span>
+                          <span>Tamanho:</span>
                           <span>{preset.settings.width}x{preset.settings.height || 'auto'}</span>
                         </div>
                       )}
@@ -235,16 +235,16 @@ const BatchPage = () => {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium">Custom Settings</h4>
+                  <h4 className="font-medium">Configurações Personalizadas</h4>
                   <p className="text-sm text-muted-foreground">
-                    Use your own optimization parameters
+                    Use seus próprios parâmetros de otimização
                   </p>
                 </div>
                 <Button
                   variant={useCustomSettings ? "default" : "outline"}
                   onClick={() => setUseCustomSettings(!useCustomSettings)}
                 >
-                  {useCustomSettings ? 'Using Custom' : 'Use Custom'}
+                  {useCustomSettings ? 'Usando Personalizado' : 'Usar Personalizado'}
                 </Button>
               </div>
             </CardContent>
@@ -254,7 +254,7 @@ const BatchPage = () => {
           {images.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Images Queue ({images.length})</CardTitle>
+                <CardTitle>Fila de Imagens ({images.length})</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -319,7 +319,7 @@ const BatchPage = () => {
           ) : (
             <Card className="sticky top-6">
               <CardHeader>
-                <CardTitle>Selected Preset</CardTitle>
+                <CardTitle>Preset Selecionado</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -334,25 +334,25 @@ const BatchPage = () => {
                   
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Quality:</span>
+                      <span className="text-muted-foreground">Qualidade:</span>
                       <span className="font-medium">{selectedPreset.settings.quality}%</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Format:</span>
+                      <span className="text-muted-foreground">Formato:</span>
                       <span className="font-medium uppercase">{selectedPreset.settings.format}</span>
                     </div>
                     {selectedPreset.settings.width && (
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Dimensions:</span>
+                        <span className="text-muted-foreground">Dimensões:</span>
                         <span className="font-medium">
                           {selectedPreset.settings.width}×{selectedPreset.settings.height || 'auto'}
                         </span>
                       </div>
                     )}
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Aspect Ratio:</span>
+                      <span className="text-muted-foreground">Proporção:</span>
                       <span className="font-medium">
-                        {selectedPreset.settings.maintainAspectRatio ? 'Locked' : 'Free'}
+                        {selectedPreset.settings.maintainAspectRatio ? 'Travada' : 'Livre'}
                       </span>
                     </div>
                   </div>
@@ -362,7 +362,7 @@ const BatchPage = () => {
                     className="w-full"
                     onClick={() => setUseCustomSettings(true)}
                   >
-                    Customize Settings
+                    Personalizar Configurações
                   </Button>
                 </div>
               </CardContent>

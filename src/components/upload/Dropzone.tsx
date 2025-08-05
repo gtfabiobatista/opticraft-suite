@@ -87,17 +87,17 @@ export const Dropzone = ({
           <h3 className="text-lg font-semibold text-foreground">
             {isDragActive 
               ? isDragReject 
-                ? 'Invalid file type' 
-                : 'Drop files here'
-              : 'Drag & drop images here'
+                ? 'Tipo de arquivo inválido' 
+                : 'Solte os arquivos aqui'
+              : 'Arraste e solte imagens aqui'
             }
           </h3>
           <p className="text-sm text-muted-foreground">
             {isDragReject 
-              ? 'Only image files are allowed'
+              ? 'Apenas arquivos de imagem são permitidos'
               : (
                 <>
-                  or <span className="text-primary font-medium">browse files</span> to upload
+                  ou <span className="text-primary font-medium">procurar arquivos</span> para enviar
                 </>
               )
             }
@@ -106,9 +106,9 @@ export const Dropzone = ({
 
         {/* File Restrictions */}
         <div className="text-xs text-muted-foreground space-y-1">
-          <p>Supported formats: JPEG, PNG, WebP</p>
-          <p>Maximum file size: {formatFileSize(maxSize)}</p>
-          <p>Maximum files: {maxFiles}</p>
+          <p>Formatos suportados: JPEG, PNG, WebP</p>
+          <p>Tamanho máximo: {formatFileSize(maxSize)}</p>
+          <p>Máximo de arquivos: {maxFiles}</p>
         </div>
 
         {/* Quick Actions */}
@@ -123,7 +123,7 @@ export const Dropzone = ({
             className="hover:bg-primary hover:text-primary-foreground"
           >
             <FileImage className="mr-2 h-4 w-4" />
-            Browse Files
+            Procurar Arquivos
           </Button>
         </div>
       </div>
@@ -132,7 +132,7 @@ export const Dropzone = ({
       {Object.keys(uploadProgress).length > 0 && (
         <div className="absolute inset-0 bg-background/90 rounded-lg flex items-center justify-center">
           <div className="text-center space-y-2">
-            <p className="text-sm font-medium">Uploading files...</p>
+            <p className="text-sm font-medium">Enviando arquivos...</p>
             <Progress value={Math.max(...Object.values(uploadProgress))} className="w-32" />
           </div>
         </div>

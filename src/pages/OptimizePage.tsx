@@ -37,15 +37,15 @@ const OptimizePage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Single Image Optimization</h1>
+          <h1 className="text-3xl font-bold text-foreground">Otimização de Imagem Individual</h1>
           <p className="text-muted-foreground">
-            Upload and optimize individual images with custom settings
+            Envie e otimize imagens individuais com configurações personalizadas
           </p>
         </div>
         {pendingImages.length > 0 && (
           <Button onClick={handleOptimizeAll} className="bg-gradient-primary">
             <Wand2 className="mr-2 h-4 w-4" />
-            Optimize All ({pendingImages.length})
+            Otimizar Todas ({pendingImages.length})
           </Button>
         )}
       </div>
@@ -69,7 +69,7 @@ const OptimizePage = () => {
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
                     <Image className="h-5 w-5" />
-                    Images ({images.length})
+                    Imagens ({images.length})
                   </CardTitle>
                   <Button
                     variant="outline"
@@ -89,7 +89,7 @@ const OptimizePage = () => {
                       input.click();
                     }}
                   >
-                    Add More
+                    Adicionar Mais
                   </Button>
                 </div>
               </CardHeader>
@@ -121,7 +121,7 @@ const OptimizePage = () => {
           {completedImages.length > 0 && (
             <Card className="border-success/50 bg-success/5">
               <CardHeader>
-                <CardTitle className="text-success">Optimization Results</CardTitle>
+                <CardTitle className="text-success">Resultados da Otimização</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-3">
@@ -129,7 +129,7 @@ const OptimizePage = () => {
                     <p className="text-2xl font-bold text-success">
                       {completedImages.length}
                     </p>
-                    <p className="text-sm text-muted-foreground">Images Completed</p>
+                    <p className="text-sm text-muted-foreground">Imagens Concluídas</p>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-bold text-success">
@@ -140,12 +140,12 @@ const OptimizePage = () => {
                         return `${savings.toFixed(1)}%`;
                       })()}
                     </p>
-                    <p className="text-sm text-muted-foreground">Average Savings</p>
+                    <p className="text-sm text-muted-foreground">Economia Média</p>
                   </div>
                   <div className="text-center">
                     <Button className="w-full bg-gradient-success text-success-foreground">
                       <Download className="mr-2 h-4 w-4" />
-                      Download All
+                      Baixar Todas
                     </Button>
                   </div>
                 </div>
