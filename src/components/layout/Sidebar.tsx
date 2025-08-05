@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { 
   BarChart3, 
   Image, 
@@ -20,6 +20,8 @@ const navigation = [
 ];
 
 export const Sidebar = () => {
+  const location = useLocation();
+  
   return (
     <div className="flex h-screen w-64 flex-col bg-card border-r border-border">
       {/* Logo */}
@@ -36,31 +38,27 @@ export const Sidebar = () => {
       <nav className="flex-1 space-y-1 p-4">
         {navigation.map((item) => {
           const Icon = item.icon;
+          const isActive = location.pathname === item.href || 
+            (item.href === '/' && location.pathname === '/');
+          
           return (
             <NavLink
               key={item.name}
               to={item.href}
-              end={item.href === '/'}
-              className={({ isActive }) =>
-                cn(
-                  'group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground',
-                  isActive
-                    ? 'bg-primary text-primary-foreground shadow-glow'
-                    : 'text-muted-foreground hover:text-foreground'
-                )
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <Icon
-                    className={cn(
-                      'mr-3 h-5 w-5 transition-colors',
-                      isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'
-                    )}
-                  />
-                  {item.name}
-                </>
+              className={cn(
+                'group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground',
+                isActive
+                  ? 'bg-primary text-primary-foreground shadow-glow'
+                  : 'text-muted-foreground hover:text-foreground'
               )}
+            >
+              <Icon
+                className={cn(
+                  'mr-3 h-5 w-5 transition-colors',
+                  isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'
+                )}
+              />
+              {item.name}
             </NavLink>
           );
         })}
