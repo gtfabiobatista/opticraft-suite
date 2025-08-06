@@ -29,6 +29,20 @@ const OptimizePage = () => {
     pendingImages.forEach(img => optimizeImage(img.id, settings));
   };
 
+  const handleDownloadAll = () => {
+    const downloadableImages = images.filter(img => img.status === 'completed' && img.downloadUrl);
+    downloadableImages.forEach((image, index) => {
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = image.downloadUrl!;
+        link.download = `optimized_${image.file.name}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, index * 100); // Delay to avoid browser blocking multiple downloads
+    });
+  };
+
   const completedImages = images.filter(img => img.status === 'completed');
   const pendingImages = images.filter(img => img.status === 'pending');
 
@@ -104,15 +118,6 @@ const OptimizePage = () => {
                     />
                   ))}
                 </div>
-                
-                {/* Add more files area */}
-                <div className="mt-4 pt-4 border-t border-border">
-                  <Dropzone
-                    onFilesAdded={handleFilesAdded}
-                    maxFiles={10}
-                    className="h-32 border-dashed border-muted-foreground/30 bg-muted/20"
-                  />
-                </div>
               </CardContent>
             </Card>
           )}
@@ -143,7 +148,11 @@ const OptimizePage = () => {
                     <p className="text-sm text-muted-foreground">Economia Média</p>
                   </div>
                   <div className="text-center">
-                    <Button className="w-full bg-gradient-success text-success-foreground">
+                    <Button 
+                      className="w-full bg-gradient-success text-success-foreground"
+                      onClick={handleDownloadAll}
+                      disabled={completedImages.length === 0}
+                    >
                       <Download className="mr-2 h-4 w-4" />
                       Baixar Todas
                     </Button>
