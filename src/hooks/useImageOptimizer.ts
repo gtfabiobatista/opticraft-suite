@@ -45,8 +45,15 @@ export const useImageOptimizer = () => {
       // Simulate API call - replace with actual implementation
       await new Promise(resolve => setTimeout(resolve, 2000));
       
+      // Get the original image for creating a downloadable version
+      const originalImage = images.find(img => img.id === imageId);
+      if (!originalImage) throw new Error('Image not found');
+
+      // Create a downloadable blob URL from the original file (simulating optimization)
+      const downloadUrl = URL.createObjectURL(originalImage.file);
+      
       // Simulate successful optimization
-      const mockOptimizedSize = Math.floor(Math.random() * 0.7 * 1000000);
+      const mockOptimizedSize = Math.floor(originalImage.originalSize * (0.3 + Math.random() * 0.4)); // 30-70% of original size
       
       setImages(prev => 
         prev.map(img => 
@@ -55,15 +62,15 @@ export const useImageOptimizer = () => {
                 ...img, 
                 status: 'completed' as const,
                 optimizedSize: mockOptimizedSize,
-                downloadUrl: `https://cdn.example.com/optimized/${imageId}`
+                downloadUrl: downloadUrl
               }
             : img
         )
       );
 
       toast({
-        title: "Image optimized successfully",
-        description: `Saved ${((1000000 - mockOptimizedSize) / 1000000 * 100).toFixed(1)}% in file size`,
+        title: "Imagem otimizada com sucesso",
+        description: `Economizou ${((originalImage.originalSize - mockOptimizedSize) / originalImage.originalSize * 100).toFixed(1)}% no tamanho do arquivo`,
       });
     } catch (error) {
       setImages(prev => 
@@ -79,12 +86,12 @@ export const useImageOptimizer = () => {
       );
 
       toast({
-        title: "Optimization failed",
-        description: "Please try again or contact support",
+        title: "Otimização falhou",
+        description: "Tente novamente ou entre em contato com o suporte",
         variant: "destructive",
       });
     }
-  }, []);
+  }, [images]);
 
   const optimizeBatch = useCallback(async (
     imageIds: string[], 
@@ -103,13 +110,13 @@ export const useImageOptimizer = () => {
       await Promise.all(promises);
       
       toast({
-        title: "Batch processing completed",
-        description: `Optimized ${imageIds.length} images successfully`,
+        title: "Processamento em lote concluído",
+        description: `${imageIds.length} imagens otimizadas com sucesso`,
       });
     } catch (error) {
       toast({
-        title: "Batch processing failed",
-        description: "Some images may not have been processed",
+        title: "Processamento em lote falhou",
+        description: "Algumas imagens podem não ter sido processadas",
         variant: "destructive",
       });
     } finally {
