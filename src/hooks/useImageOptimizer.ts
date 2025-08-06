@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { ImageFile, OptimizationSettings } from '@/types/apiTypes';
 import { toast } from '@/hooks/use-toast';
+import { optimizeImage as optimizeImageFile, createDownloadUrl } from '@/lib/imageOptimizer';
 
 export const useImageOptimizer = () => {
   const [images, setImages] = useState<ImageFile[]>([]);
@@ -42,18 +43,15 @@ export const useImageOptimizer = () => {
     );
 
     try {
-      // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Get the original image for creating a downloadable version
+      // Get the original image
       const originalImage = images.find(img => img.id === imageId);
       if (!originalImage) throw new Error('Image not found');
 
-      // Create a downloadable blob URL from the original file (simulating optimization)
-      const downloadUrl = URL.createObjectURL(originalImage.file);
+      // Perform real image optimization
+      const result = await optimizeImageFile(originalImage.file, settings);
       
-      // Simulate successful optimization
-      const mockOptimizedSize = Math.floor(originalImage.originalSize * (0.3 + Math.random() * 0.4)); // 30-70% of original size
+      // Create download URL from optimized blob
+      const downloadUrl = createDownloadUrl(result.blob);
       
       setImages(prev => 
         prev.map(img => 
@@ -61,25 +59,28 @@ export const useImageOptimizer = () => {
             ? { 
                 ...img, 
                 status: 'completed' as const,
-                optimizedSize: mockOptimizedSize,
+                optimizedSize: result.size,
                 downloadUrl: downloadUrl
               }
             : img
         )
       );
 
+      const savingsPercent = ((originalImage.originalSize - result.size) / originalImage.originalSize * 100);
+      
       toast({
         title: "Imagem otimizada com sucesso",
-        description: `Economizou ${((originalImage.originalSize - mockOptimizedSize) / originalImage.originalSize * 100).toFixed(1)}% no tamanho do arquivo`,
+        description: `Economizou ${savingsPercent.toFixed(1)}% no tamanho do arquivo (${result.format.toUpperCase()})`,
       });
     } catch (error) {
+      console.error('Optimization error:', error);
       setImages(prev => 
         prev.map(img => 
           img.id === imageId 
             ? { 
                 ...img, 
                 status: 'error' as const, 
-                error: 'Optimization failed'
+                error: error instanceof Error ? error.message : 'Optimization failed'
               }
             : img
         )
