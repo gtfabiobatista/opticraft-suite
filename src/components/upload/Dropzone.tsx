@@ -111,21 +111,21 @@ export const Dropzone = ({
           <p>Máximo de arquivos: {maxFiles}</p>
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex flex-wrap gap-2 pt-2">
+        {/* Browse Button - Remove to prevent overlap */}
+        {!isDragActive && (
           <Button 
             variant="outline" 
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
-              // Open file dialog
+              // The file dialog is already handled by the dropzone
             }}
-            className="hover:bg-primary hover:text-primary-foreground"
+            className="hover:bg-primary hover:text-primary-foreground mt-2"
           >
             <FileImage className="mr-2 h-4 w-4" />
             Procurar Arquivos
           </Button>
-        </div>
+        )}
       </div>
 
       {/* Upload Progress Overlay */}
