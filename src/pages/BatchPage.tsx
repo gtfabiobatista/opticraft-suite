@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layers, Play, Pause, Download, Trash2, Settings } from 'lucide-react';
+import { Upload, Play, Pause, Download, Trash2, Settings } from 'lucide-react';
 import { Dropzone } from '@/components/upload/Dropzone';
 import { SettingsPanel } from '@/components/optimize/SettingsPanel';
 import { Button } from '@/components/ui/button';
@@ -170,141 +170,23 @@ const BatchPage = () => {
       )}
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Upload and Presets */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Upload Area */}
-          <Dropzone
-            onFilesAdded={handleFilesAdded}
-            maxFiles={100}
-            className="h-40"
-          />
-
-          {/* Presets */}
+        {/* Upload Area */}
+        <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Settings className="h-5 w-5" />
-                Presets de Otimização
+                <Upload className="h-5 w-5" />
+                Upload de Imagens
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-3 md:grid-cols-2">
-                {presets.map((preset) => (
-                  <div
-                    key={preset.id}
-                    className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-md ${
-                      !useCustomSettings && selectedPreset.id === preset.id
-                        ? 'border-primary bg-primary/5 shadow-glow'
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                    onClick={() => {
-                      setSelectedPreset(preset);
-                      setUseCustomSettings(false);
-                    }}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium">{preset.name}</h4>
-                      {preset.isDefault && (
-                        <Badge variant="outline" className="text-xs">Padrão</Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {preset.description}
-                    </p>
-                    <div className="text-xs space-y-1">
-                      <div className="flex justify-between">
-                        <span>Qualidade:</span>
-                        <span>{preset.settings.quality}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Formato:</span>
-                        <span className="uppercase">{preset.settings.format}</span>
-                      </div>
-                      {preset.settings.width && (
-                        <div className="flex justify-between">
-                          <span>Tamanho:</span>
-                          <span>{preset.settings.width}x{preset.settings.height || 'auto'}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <Separator className="my-4" />
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-medium">Configurações Personalizadas</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Use seus próprios parâmetros de otimização
-                  </p>
-                </div>
-                <Button
-                  variant={useCustomSettings ? "default" : "outline"}
-                  onClick={() => setUseCustomSettings(!useCustomSettings)}
-                >
-                  {useCustomSettings ? 'Usando Personalizado' : 'Usar Personalizado'}
-                </Button>
-              </div>
+              <Dropzone
+                onFilesAdded={handleFilesAdded}
+                maxFiles={100}
+                className="h-32"
+              />
             </CardContent>
           </Card>
-
-          {/* Images Table */}
-          {images.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Fila de Imagens ({images.length})</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {images.map((image) => (
-                    <div
-                      key={image.id}
-                      className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={image.preview}
-                          alt={image.file.name}
-                          className="h-10 w-10 rounded object-cover"
-                        />
-                        <div>
-                          <p className="text-sm font-medium truncate max-w-48">
-                            {image.file.name}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {formatFileSize(image.originalSize)}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge
-                          variant="outline"
-                          className={
-                            image.status === 'completed' ? 'bg-success/10 text-success border-success' :
-                            image.status === 'processing' ? 'bg-warning/10 text-warning border-warning' :
-                            image.status === 'error' ? 'bg-destructive/10 text-destructive border-destructive' :
-                            ''
-                          }
-                        >
-                          {image.status}
-                        </Badge>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => removeImage(image.id)}
-                          className="h-8 w-8"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
 
         {/* Settings Panel */}
@@ -370,6 +252,151 @@ const BatchPage = () => {
           )}
         </div>
       </div>
+
+      {/* Presets Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Settings className="h-5 w-5" />
+            Presets de Otimização
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-4">
+            {presets.map((preset) => (
+              <div
+                key={preset.id}
+                className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-md ${
+                  !useCustomSettings && selectedPreset.id === preset.id
+                    ? 'border-primary bg-primary/5 shadow-glow'
+                    : 'border-border hover:border-primary/50'
+                }`}
+                onClick={() => {
+                  setSelectedPreset(preset);
+                  setUseCustomSettings(false);
+                }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-medium">{preset.name}</h4>
+                  {preset.isDefault && (
+                    <Badge variant="outline" className="text-xs">Padrão</Badge>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {preset.description}
+                </p>
+                <div className="text-xs space-y-1">
+                  <div className="flex justify-between">
+                    <span>Qualidade:</span>
+                    <span>{preset.settings.quality}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Formato:</span>
+                    <span className="uppercase">{preset.settings.format}</span>
+                  </div>
+                  {preset.settings.width && (
+                    <div className="flex justify-between">
+                      <span>Tamanho:</span>
+                      <span>{preset.settings.width}x{preset.settings.height || 'auto'}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Separator className="my-4" />
+
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-medium">Configurações Personalizadas</h4>
+              <p className="text-sm text-muted-foreground">
+                Use seus próprios parâmetros de otimização
+              </p>
+            </div>
+            <Button
+              variant={useCustomSettings ? "default" : "outline"}
+              onClick={() => setUseCustomSettings(!useCustomSettings)}
+            >
+              {useCustomSettings ? 'Usando Personalizado' : 'Usar Personalizado'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Images Queue */}
+      {images.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Fila de Imagens ({images.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {images.map((image) => (
+                <div
+                  key={image.id}
+                  className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
+                >
+                  <div className="flex items-center space-x-3">
+                    <img
+                      src={image.preview}
+                      alt={image.file.name}
+                      className="h-12 w-12 rounded object-cover"
+                    />
+                    <div>
+                      <p className="text-sm font-medium truncate max-w-48">
+                        {image.file.name}
+                      </p>
+                      <div className="flex gap-2 text-xs text-muted-foreground">
+                        <span>Original: {formatFileSize(image.originalSize)}</span>
+                        {image.optimizedSize && (
+                          <span>Otimizada: {formatFileSize(image.optimizedSize)}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Badge
+                      variant="outline"
+                      className={
+                        image.status === 'completed' ? 'bg-success/10 text-success border-success' :
+                        image.status === 'processing' ? 'bg-warning/10 text-warning border-warning' :
+                        image.status === 'error' ? 'bg-destructive/10 text-destructive border-destructive' :
+                        ''
+                      }
+                    >
+                      {image.status === 'pending' ? 'Pendente' :
+                       image.status === 'processing' ? 'Processando' :
+                       image.status === 'completed' ? 'Concluído' :
+                       'Erro'}
+                    </Badge>
+                    {image.status === 'completed' && image.downloadUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                      >
+                        <a href={image.downloadUrl} download={image.optimizedFilename || `optimized_${image.file.name}`}>
+                          <Download className="h-3 w-3 mr-1" />
+                          Baixar
+                        </a>
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeImage(image.id)}
+                      className="h-8 w-8"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

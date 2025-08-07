@@ -7,6 +7,7 @@ export interface ImageFile {
   optimizedSize?: number;
   error?: string;
   downloadUrl?: string;
+  optimizedFilename?: string;
 }
 
 export interface OptimizationSettings {

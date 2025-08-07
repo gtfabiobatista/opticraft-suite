@@ -53,6 +53,11 @@ export const useImageOptimizer = () => {
       // Create download URL from optimized blob
       const downloadUrl = createDownloadUrl(result.blob);
       
+      // Create a filename for the optimized image
+      const originalName = originalImage.file.name;
+      const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.'));
+      const optimizedFilename = `${nameWithoutExt}_optimized.${result.format}`;
+      
       setImages(prev => 
         prev.map(img => 
           img.id === imageId 
@@ -60,7 +65,8 @@ export const useImageOptimizer = () => {
                 ...img, 
                 status: 'completed' as const,
                 optimizedSize: result.size,
-                downloadUrl: downloadUrl
+                downloadUrl: downloadUrl,
+                optimizedFilename: optimizedFilename
               }
             : img
         )
