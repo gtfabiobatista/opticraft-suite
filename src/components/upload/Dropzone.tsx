@@ -58,7 +58,7 @@ export const Dropzone = ({
     <div
       {...getRootProps()}
       className={cn(
-        'relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 cursor-pointer group',
+        'relative border-2 border-dashed rounded-lg p-4 text-center transition-all duration-300 cursor-pointer group overflow-hidden',
         isDragActive && !isDragReject && 'border-primary bg-primary/5 shadow-glow',
         isDragReject && 'border-destructive bg-destructive/5',
         !isDragActive && 'border-border hover:border-primary/50 hover:bg-accent/50',
@@ -67,24 +67,24 @@ export const Dropzone = ({
     >
       <input {...getInputProps()} />
       
-      <div className="flex flex-col items-center space-y-4">
+      <div className="flex flex-col items-center justify-center space-y-3 h-full min-h-[120px]">
         {/* Upload Icon */}
         <div className={cn(
-          'rounded-full p-4 transition-all duration-300',
+          'rounded-full p-3 transition-all duration-300',
           isDragActive && !isDragReject && 'bg-primary text-primary-foreground scale-110',
           isDragReject && 'bg-destructive text-destructive-foreground',
           !isDragActive && 'bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground'
         )}>
           {isDragReject ? (
-            <AlertCircle className="h-8 w-8" />
+            <AlertCircle className="h-6 w-6" />
           ) : (
-            <Upload className="h-8 w-8" />
+            <Upload className="h-6 w-6" />
           )}
         </div>
 
         {/* Text Content */}
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-foreground">
+        <div className="space-y-1 max-w-full">
+          <h3 className="text-base font-semibold text-foreground">
             {isDragActive 
               ? isDragReject 
                 ? 'Tipo de arquivo inválido' 
@@ -97,35 +97,17 @@ export const Dropzone = ({
               ? 'Apenas arquivos de imagem são permitidos'
               : (
                 <>
-                  ou <span className="text-primary font-medium">procurar arquivos</span> para enviar
+                  ou <span className="text-primary font-medium cursor-pointer">procurar arquivos</span> para enviar
                 </>
               )
             }
           </p>
         </div>
 
-        {/* File Restrictions */}
-        <div className="text-xs text-muted-foreground space-y-1">
-          <p>Formatos suportados: JPEG, PNG, WebP</p>
-          <p>Tamanho máximo: {formatFileSize(maxSize)}</p>
-          <p>Máximo de arquivos: {maxFiles}</p>
+        {/* File Restrictions - Condensed */}
+        <div className="text-xs text-muted-foreground text-center">
+          <p>JPEG, PNG, WebP • Max: {formatFileSize(maxSize)} • {maxFiles} arquivos</p>
         </div>
-
-        {/* Browse Button - Remove to prevent overlap */}
-        {!isDragActive && (
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              // The file dialog is already handled by the dropzone
-            }}
-            className="hover:bg-primary hover:text-primary-foreground mt-2"
-          >
-            <FileImage className="mr-2 h-4 w-4" />
-            Procurar Arquivos
-          </Button>
-        )}
       </div>
 
       {/* Upload Progress Overlay */}
