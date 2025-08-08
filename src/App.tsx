@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import OptimizePage from "./pages/OptimizePage";
 import BatchPage from "./pages/BatchPage";
 import ApiKeysPage from "./pages/ApiKeysPage";
+import HistoryPage from "./pages/HistoryPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,7 +27,7 @@ const AppLayout = () => {
             <Route path="/optimize" element={<OptimizePage />} />
             <Route path="/batch" element={<BatchPage />} />
             <Route path="/api-keys" element={<ApiKeysPage />} />
-            <Route path="/history" element={<Dashboard />} />
+            <Route path="/history" element={<HistoryPage />} />
             <Route path="/settings" element={<Dashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

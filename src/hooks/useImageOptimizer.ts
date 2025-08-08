@@ -2,10 +2,12 @@ import { useState, useCallback } from 'react';
 import { ImageFile, OptimizationSettings } from '@/types/apiTypes';
 import { toast } from '@/hooks/use-toast';
 import { optimizeImage as optimizeImageFile, createDownloadUrl } from '@/lib/imageOptimizer';
+import { useProcessingHistory } from '@/hooks/useProcessingHistory';
 
 export const useImageOptimizer = () => {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const { addToHistory } = useProcessingHistory();
 
   const addImages = useCallback((files: File[]) => {
     const newImages: ImageFile[] = files.map(file => ({
@@ -74,23 +76,50 @@ export const useImageOptimizer = () => {
 
       const savingsPercent = ((originalImage.originalSize - result.size) / originalImage.originalSize * 100);
       
+      // Add to history
+      addToHistory({
+        fileName: originalImage.file.name,
+        originalSize: originalImage.originalSize,
+        optimizedSize: result.size,
+        format: result.format,
+        quality: settings.quality,
+        status: 'success',
+        downloadUrl: downloadUrl,
+      });
+
       toast({
         title: "Imagem otimizada com sucesso",
         description: `Economizou ${savingsPercent.toFixed(1)}% no tamanho do arquivo (${result.format.toUpperCase()})`,
       });
     } catch (error) {
       console.error('Optimization error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Optimization failed';
+      
       setImages(prev => 
         prev.map(img => 
           img.id === imageId 
             ? { 
                 ...img, 
                 status: 'error' as const, 
-                error: error instanceof Error ? error.message : 'Optimization failed'
+                error: errorMessage
               }
             : img
         )
       );
+
+      // Add error to history
+      const originalImage = images.find(img => img.id === imageId);
+      if (originalImage) {
+        addToHistory({
+          fileName: originalImage.file.name,
+          originalSize: originalImage.originalSize,
+          optimizedSize: 0,
+          format: 'error',
+          quality: settings.quality,
+          status: 'error',
+          error: errorMessage,
+        });
+      }
 
       toast({
         title: "Otimização falhou",
