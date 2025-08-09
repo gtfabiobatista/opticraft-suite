@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Upload, Play, Pause, Download, Trash2, Settings } from 'lucide-react';
 import { Dropzone } from '@/components/upload/Dropzone';
 import { SettingsPanel } from '@/components/optimize/SettingsPanel';
@@ -9,35 +9,25 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useImageOptimizer } from '@/hooks/useImageOptimizer';
 import { OptimizationSettings, OptimizationPreset } from '@/types/apiTypes';
+import { useAppSettings } from '@/hooks/useAppSettings';
+import { toast } from '@/hooks/use-toast';
 
-const defaultPresets: OptimizationPreset[] = [
-  {
-    id: '1',
-    name: 'E-commerce',
-    description: 'Qualidade balanceada para imagens de produtos',
-    settings: { quality: 85, format: 'webp', maintainAspectRatio: true },
-    isDefault: true,
-  },
-  {
-    id: '2',
-    name: 'Redes Sociais',
-    description: 'Otimizado para plataformas sociais',
-    settings: { quality: 75, format: 'webp', width: 1200, maintainAspectRatio: true },
-  },
-  {
-    id: '3',
-    name: 'Miniaturas Web',
-    description: 'Miniaturas pequenas e rápidas de carregar',
-    settings: { quality: 70, format: 'webp', width: 300, height: 300, maintainAspectRatio: false },
-  },
-];
+// Presets agora vêm de useAppSettings
 
 const BatchPage = () => {
   const { images, addImages, removeImage, optimizeBatch, isProcessing, clearCompleted } = useImageOptimizer();
-  const [selectedPreset, setSelectedPreset] = useState<OptimizationPreset>(defaultPresets[0]);
-  const [customSettings, setCustomSettings] = useState<OptimizationSettings>(defaultPresets[0].settings);
-  const [presets, setPresets] = useState<OptimizationPreset[]>(defaultPresets);
+  const { presets, addPreset } = useAppSettings();
+  const defaultPreset = useMemo(() => presets.find(p => p.isDefault) || presets[0], [presets]);
+  const [selectedPreset, setSelectedPreset] = useState<OptimizationPreset | undefined>(defaultPreset);
+  const [customSettings, setCustomSettings] = useState<OptimizationSettings>(defaultPreset?.settings || { quality: 80, format: 'auto', maintainAspectRatio: true });
   const [useCustomSettings, setUseCustomSettings] = useState(false);
+
+  useEffect(() => {
+    setSelectedPreset(defaultPreset);
+    if (defaultPreset) {
+      setCustomSettings(defaultPreset.settings);
+    }
+  }, [defaultPreset]);
 
   const handleFilesAdded = (files: File[]) => {
     addImages(files);
@@ -48,18 +38,13 @@ const BatchPage = () => {
       .filter(img => img.status === 'pending')
       .map(img => img.id);
     
-    const settings = useCustomSettings ? customSettings : selectedPreset.settings;
+    const settings = useCustomSettings ? customSettings : (selectedPreset?.settings || customSettings);
     optimizeBatch(pendingImageIds, settings);
   };
 
   const handlePresetSave = (name: string, settings: OptimizationSettings) => {
-    const newPreset: OptimizationPreset = {
-      id: crypto.randomUUID(),
-      name,
-      description: 'Custom preset',
-      settings,
-    };
-    setPresets(prev => [...prev, newPreset]);
+    addPreset(name, settings);
+    toast({ title: 'Preset salvo', description: `“${name}” criado.` });
   };
 
   const formatFileSize = (bytes: number): string => {

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { useAppSettings } from '@/hooks/useAppSettings';
 // Dados agora derivados do histórico real
 
 
@@ -19,7 +20,7 @@ const Dashboard = () => {
   const { allHistory, getHistoryStats } = useProcessingHistory();
   const stats = getHistoryStats();
 
-  const monthlyLimit = 50000; // limite padrão do plano
+  const { monthlyUsageLimit, planName } = useAppSettings();
   const now = new Date();
 
   const monthlyUsage = useMemo(() => {
@@ -29,7 +30,7 @@ const Dashboard = () => {
     }).length;
   }, [allHistory]);
 
-  const usagePercentage = (monthlyUsage / monthlyLimit) * 100;
+  const usagePercentage = (monthlyUsage / monthlyUsageLimit) * 100;
 
   const dailyUsage = useMemo(() => {
     const days = 7;
@@ -123,7 +124,7 @@ const Dashboard = () => {
         <StatsCard
           title="Requisições da API"
           value={monthlyUsage.toLocaleString()}
-          description={`de ${monthlyLimit.toLocaleString()} este mês`}
+          description={`de ${monthlyUsageLimit.toLocaleString()} este mês`}
           icon={<BarChart3 className="h-4 w-4" />}
         />
       </div>
@@ -134,7 +135,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">Uso Mensal</CardTitle>
             <Badge variant="outline" className="bg-gradient-primary text-primary-foreground border-0">
-              Plano Pro
+              {planName}
             </Badge>
           </div>
         </CardHeader>
@@ -142,7 +143,7 @@ const Dashboard = () => {
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">
-                {monthlyUsage.toLocaleString()} / {monthlyLimit.toLocaleString()} requests
+                {monthlyUsage.toLocaleString()} / {monthlyUsageLimit.toLocaleString()} requests
               </span>
               <span className="font-medium">
                 {usagePercentage.toFixed(1)}%

@@ -7,14 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useImageOptimizer } from '@/hooks/useImageOptimizer';
 import { OptimizationSettings } from '@/types/apiTypes';
+import { useAppSettings } from '@/hooks/useAppSettings';
+import { toast } from '@/hooks/use-toast';
 
 const OptimizePage = () => {
   const { images, addImages, removeImage, optimizeImage } = useImageOptimizer();
-  const [settings, setSettings] = useState<OptimizationSettings>({
-    quality: 80,
-    format: 'auto',
-    maintainAspectRatio: true,
-  });
+  const { optimizationDefaults, addPreset } = useAppSettings();
+  const [settings, setSettings] = useState<OptimizationSettings>(optimizationDefaults);
 
   const handleFilesAdded = (files: File[]) => {
     addImages(files);
@@ -168,6 +167,10 @@ const OptimizePage = () => {
           <SettingsPanel
             settings={settings}
             onSettingsChange={setSettings}
+            onPresetSave={(name, s) => {
+              addPreset(name, s);
+              toast({ title: 'Preset salvo', description: `“${name}” criado.` });
+            }}
             className="sticky top-6"
           />
         </div>

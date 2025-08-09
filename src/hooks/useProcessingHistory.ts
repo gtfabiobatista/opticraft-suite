@@ -3,6 +3,27 @@ import { ProcessingHistory } from '@/types/apiTypes';
 
 const STORAGE_KEY = 'imageOptimizer_processingHistory';
 
+const APP_SETTINGS_KEY = 'imageOptimizer_appSettings';
+const getRetentionDays = (): number | null => {
+  try {
+    const raw = localStorage.getItem(APP_SETTINGS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    const d = parsed?.historyRetentionDays;
+    if (typeof d === 'number' && d > 0) return d;
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+const pruneByRetention = (list: ProcessingHistory[]) => {
+  const days = getRetentionDays();
+  if (!days) return list;
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  return list.filter((e) => new Date(e.processedAt).getTime() >= cutoff);
+};
+
 export interface HistoryFilters {
   dateRange: 'today' | 'week' | 'month' | 'all' | 'custom';
   status: 'all' | 'success' | 'error';
@@ -35,7 +56,7 @@ export const useProcessingHistory = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setHistory(parsed);
+        setHistory(pruneByRetention(parsed));
       } catch (error) {
         console.error('Failed to parse history from localStorage:', error);
       }
@@ -54,7 +75,7 @@ export const useProcessingHistory = () => {
       processedAt: new Date().toISOString(),
     };
     
-    setHistory(prev => [newEntry, ...prev]);
+    setHistory(prev => pruneByRetention([newEntry, ...prev]));
   }, []);
 
   const addBatchToHistory = useCallback((entries: Omit<ProcessingHistory, 'id' | 'processedAt'>[]) => {
@@ -65,7 +86,7 @@ export const useProcessingHistory = () => {
       processedAt: timestamp,
     }));
     
-    setHistory(prev => [...newEntries, ...prev]);
+    setHistory(prev => pruneByRetention([...newEntries, ...prev]));
   }, []);
 
   const removeFromHistory = useCallback((id: string) => {

@@ -12,6 +12,7 @@ import BatchPage from "./pages/BatchPage";
 import ApiKeysPage from "./pages/ApiKeysPage";
 import HistoryPage from "./pages/HistoryPage";
 import NotFound from "./pages/NotFound";
+import SettingsPage from "./pages/SettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -28,7 +29,7 @@ const AppLayout = () => {
             <Route path="/batch" element={<BatchPage />} />
             <Route path="/api-keys" element={<ApiKeysPage />} />
             <Route path="/history" element={<HistoryPage />} />
-            <Route path="/settings" element={<Dashboard />} />
+            <Route path="/settings" element={<SettingsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
